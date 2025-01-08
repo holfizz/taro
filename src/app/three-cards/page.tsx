@@ -2,14 +2,32 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
-import { CARDS } from './constants'
-import styles from './page.module.css'
+import { CARDS } from '../constants'
+import styles from '../page.module.css'
 
-export default function Home() {
+declare global {
+	interface Window {
+		Telegram: {
+			WebApp: {
+				close: () => void
+				sendData: (data: string) => void
+				ready: () => void
+			}
+		}
+	}
+}
+
+export default function ThreeCards() {
 	const [isStarted, setIsStarted] = useState(false)
 	const [cards, setCards] = useState<string[]>([])
-	const [selectedCard, setSelectedCard] = useState<string | null>(null)
+	const [selectedCards, setSelectedCards] = useState<string[]>([])
 	const [showReadingButton, setShowReadingButton] = useState(false)
+
+	useState(() => {
+		if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
+			window.Telegram.WebApp.ready()
+		}
+	})
 
 	const startReading = () => {
 		if (!isStarted) {
@@ -25,9 +43,23 @@ export default function Home() {
 	}
 
 	const handleCardClick = (card: string) => {
-		if (!selectedCard) {
-			setSelectedCard(card)
-			setShowReadingButton(true)
+		if (selectedCards.length < 3 && !selectedCards.includes(card)) {
+			const newSelectedCards = [...selectedCards, card]
+			setSelectedCards(newSelectedCards)
+			if (newSelectedCards.length === 3) {
+				setShowReadingButton(true)
+			}
+		}
+	}
+
+	const handleReadingStart = () => {
+		if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
+			const data = JSON.stringify({
+				type: 'three-cards',
+				selectedCards: selectedCards,
+			})
+			window.Telegram.WebApp.sendData(data)
+			window.Telegram.WebApp.close()
 		}
 	}
 
@@ -41,7 +73,9 @@ export default function Home() {
 				{isStarted && (
 					<>
 						<h1 className={styles.title}>
-							{!selectedCard ? 'Выберите 1 карту' : ''}
+							{selectedCards.length < 3
+								? `Выберите ${3 - selectedCards.length} карты`
+								: ''}
 						</h1>
 						<div className={styles.cardsContainer}>
 							{cards.map((card, index) => (
@@ -52,7 +86,7 @@ export default function Home() {
 								>
 									<div
 										className={`${styles.cardInner} ${
-											selectedCard === card ? styles.flipped : ''
+											selectedCards.includes(card) ? styles.flipped : ''
 										}`}
 									>
 										<div className={styles.cardFront}>
@@ -98,7 +132,9 @@ export default function Home() {
 					showReadingButton ? styles.show : ''
 				}`}
 			>
-				<button className={styles.readingButton}>Начать чтение расклада</button>
+				<button className={styles.readingButton} onClick={handleReadingStart}>
+					Начать чтение расклада
+				</button>
 			</div>
 		</main>
 	)
