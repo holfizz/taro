@@ -1,0 +1,280 @@
+.main {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: black;
+}
+
+.background {
+	width: 100%;
+	height: 100%;
+	background-image: url('/bg.jpeg');
+	background-size: cover;
+	background-position: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: center;
+	position: relative;
+	padding-bottom: 40px;
+}
+
+.deck {
+	cursor: pointer;
+	position: relative;
+	width: 80px;
+	height: 120px;
+	margin-bottom: 30px;
+	transform-style: preserve-3d;
+}
+
+.deck:not(.started) {
+	animation: float 3s ease-in-out infinite;
+}
+
+.deckGlow {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	background: radial-gradient(
+		ellipse 80% 80%,
+		rgba(255, 255, 0, 0.3) 0%,
+		rgba(255, 223, 0, 0.2) 30%,
+		rgba(255, 223, 0, 0.1) 50%,
+		rgba(255, 223, 0, 0) 70%
+	);
+	border-radius: 20px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	filter: blur(35px);
+	z-index: 0;
+}
+
+.deck:not(.started) .deckGlow {
+	animation: glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+	0% {
+		opacity: 0.9;
+		transform: translate(-50%, -50%) scale(1);
+	}
+	50% {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1.1);
+	}
+	100% {
+		opacity: 0.9;
+		transform: translate(-50%, -50%) scale(1);
+	}
+}
+
+.cardStack {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	transform-style: preserve-3d;
+}
+
+.stackCard {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	backface-visibility: hidden;
+	border-radius: 10px;
+	overflow: hidden;
+	background: url('/cards/back.jpg') center/cover;
+	border: 1px solid #e8ccc0;
+	box-shadow: 0 0 10px rgba(232, 204, 192, 0.2);
+}
+
+/* Создаем 15 карт в стопке */
+.stackCard:nth-child(1) {
+	transform: translateY(0);
+}
+.stackCard:nth-child(2) {
+	transform: translateY(1px);
+}
+.stackCard:nth-child(3) {
+	transform: translateY(2px);
+}
+.stackCard:nth-child(4) {
+	transform: translateY(3px);
+}
+.stackCard:nth-child(5) {
+	transform: translateY(4px);
+}
+.stackCard:nth-child(6) {
+	transform: translateY(5px);
+}
+.stackCard:nth-child(7) {
+	transform: translateY(6px);
+}
+.stackCard:nth-child(8) {
+	transform: translateY(7px);
+}
+.stackCard:nth-child(9) {
+	transform: translateY(8px);
+}
+.stackCard:nth-child(10) {
+	transform: translateY(9px);
+}
+.stackCard:nth-child(11) {
+	transform: translateY(10px);
+}
+.stackCard:nth-child(12) {
+	transform: translateY(11px);
+}
+.stackCard:nth-child(13) {
+	transform: translateY(12px);
+}
+.stackCard:nth-child(14) {
+	transform: translateY(13px);
+}
+.stackCard:nth-child(15) {
+	transform: translateY(14px);
+}
+
+@keyframes float {
+	0% {
+		transform: translateY(0) rotate(0deg);
+	}
+	50% {
+		transform: translateY(-15px) rotate(3deg);
+	}
+	100% {
+		transform: translateY(0) rotate(0deg);
+	}
+}
+
+.title {
+	color: #675c55;
+	font-size: 18px;
+	text-align: center;
+	margin: 0;
+	position: absolute;
+	top: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.cardsContainer {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 10px;
+	max-width: 400px;
+	padding: 20px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -80%);
+}
+
+.card {
+	perspective: 1000px;
+	cursor: pointer;
+	opacity: 0;
+	width: 70px;
+	height: 110px;
+}
+
+.cardInner {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	transition: transform 0.8s;
+	transform-style: preserve-3d;
+}
+
+.cardFront,
+.cardBack {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	backface-visibility: hidden;
+	border-radius: 10px;
+	overflow: hidden;
+	border: 1px solid #e8ccc0;
+}
+
+.cardImageWrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.cardBack {
+	transform: rotateY(180deg);
+}
+
+.flipped {
+	transform: rotateY(180deg);
+}
+
+.readingButton {
+	position: fixed;
+	bottom: 40px;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 15px 30px;
+	font-size: 18px;
+	background: #4a90e2;
+	color: white;
+	border: none;
+	border-radius: 25px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	opacity: 0;
+	animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translate(-50%, 20px);
+	}
+	to {
+		opacity: 1;
+		transform: translate(-50%, 0);
+	}
+}
+
+.readingButton:hover {
+	background: #357abd;
+	transform: translateY(-2px);
+}
+
+/* Анимации появления карт */
+.cardAppear0 {
+	animation: slideUp 0.6s ease-out forwards 0.1s;
+}
+.cardAppear1 {
+	animation: slideUp 0.6s ease-out forwards 0.7s;
+}
+.cardAppear2 {
+	animation: slideUp 0.6s ease-out forwards 1.3s;
+}
+.cardAppear3 {
+	animation: slideUp 0.6s ease-out forwards 1.9s;
+}
+.cardAppear4 {
+	animation: slideUp 0.6s ease-out forwards 2.5s;
+}
+.cardAppear5 {
+	animation: slideUp 0.6s ease-out forwards 3.1s;
+}
+
+@keyframes slideUp {
+	0% {
+		transform: translateY(100px);
+		opacity: 0;
+	}
+	100% {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
