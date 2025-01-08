@@ -1,21 +1,10 @@
 'use client'
 
+import { useTelegram } from '@/hooks/useTelegram'
 import Image from 'next/image'
 import { useState } from 'react'
 import { CARDS } from '../constants'
 import styles from '../page.module.css'
-
-declare global {
-	interface Window {
-		Telegram: {
-			WebApp: {
-				close: () => void
-				sendData: (data: string) => void
-				ready: () => void
-			}
-		}
-	}
-}
 
 export default function TwelveCards() {
 	const [isStarted, setIsStarted] = useState(false)
@@ -25,12 +14,7 @@ export default function TwelveCards() {
 	const [selectedSecondSet, setSelectedSecondSet] = useState<string[]>([])
 	const [showSecondSet, setShowSecondSet] = useState(false)
 	const [showReadingButton, setShowReadingButton] = useState(false)
-
-	useState(() => {
-		if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
-			window.Telegram.WebApp.ready()
-		}
-	})
+	const { isReady, close } = useTelegram()
 
 	const startReading = () => {
 		if (!isStarted) {
@@ -69,13 +53,8 @@ export default function TwelveCards() {
 	}
 
 	const handleReadingStart = () => {
-		if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
-			const data = JSON.stringify({
-				type: 'twelve-cards',
-				selectedCards: [...selectedFirstSet, ...selectedSecondSet],
-			})
-			window.Telegram.WebApp.sendData(data)
-			window.Telegram.WebApp.close()
+		if (isReady) {
+			close()
 		}
 	}
 

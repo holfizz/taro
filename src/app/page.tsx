@@ -1,5 +1,6 @@
 'use client'
 
+import { useTelegram } from '@/hooks/useTelegram'
 import Image from 'next/image'
 import { useState } from 'react'
 import { CARDS } from './constants'
@@ -10,6 +11,7 @@ export default function Home() {
 	const [cards, setCards] = useState<string[]>([])
 	const [selectedCard, setSelectedCard] = useState<string | null>(null)
 	const [showReadingButton, setShowReadingButton] = useState(false)
+	const { isReady } = useTelegram()
 
 	const startReading = () => {
 		if (!isStarted) {
@@ -28,6 +30,12 @@ export default function Home() {
 		if (!selectedCard) {
 			setSelectedCard(card)
 			setShowReadingButton(true)
+		}
+	}
+
+	const handleReadingStart = () => {
+		if (isReady) {
+			window.Telegram.WebApp.close()
 		}
 	}
 
@@ -98,7 +106,9 @@ export default function Home() {
 					showReadingButton ? styles.show : ''
 				}`}
 			>
-				<button className={styles.readingButton}>Начать чтение расклада</button>
+				<button onClick={handleReadingStart} className={styles.readingButton}>
+					Начать чтение расклада
+				</button>
 			</div>
 		</main>
 	)

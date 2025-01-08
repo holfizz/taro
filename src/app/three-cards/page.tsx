@@ -1,33 +1,17 @@
 'use client'
 
+import { useTelegram } from '@/hooks/useTelegram'
 import Image from 'next/image'
 import { useState } from 'react'
 import { CARDS } from '../constants'
 import styles from '../page.module.css'
-
-declare global {
-	interface Window {
-		Telegram: {
-			WebApp: {
-				close: () => void
-				sendData: (data: string) => void
-				ready: () => void
-			}
-		}
-	}
-}
 
 export default function ThreeCards() {
 	const [isStarted, setIsStarted] = useState(false)
 	const [cards, setCards] = useState<string[]>([])
 	const [selectedCards, setSelectedCards] = useState<string[]>([])
 	const [showReadingButton, setShowReadingButton] = useState(false)
-
-	useState(() => {
-		if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
-			window.Telegram.WebApp.ready()
-		}
-	})
+	const { isReady, close } = useTelegram()
 
 	const startReading = () => {
 		if (!isStarted) {
@@ -53,13 +37,8 @@ export default function ThreeCards() {
 	}
 
 	const handleReadingStart = () => {
-		if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
-			const data = JSON.stringify({
-				type: 'three-cards',
-				selectedCards: selectedCards,
-			})
-			window.Telegram.WebApp.sendData(data)
-			window.Telegram.WebApp.close()
+		if (isReady) {
+			close()
 		}
 	}
 

@@ -121,7 +121,6 @@
 	box-shadow: 0 0 10px rgba(232, 204, 192, 0.2);
 }
 
-/* Создаем 15 карт в стопке */
 .stackCard:nth-child(1) {
 	transform: translateY(0);
 }
@@ -204,7 +203,6 @@
 	transition: transform 0.3s ease-out;
 }
 
-/* Специальные стили для компонента с 9 картами */
 .twelve .cardsContainer {
 	max-width: 280px;
 	gap: 8px;
@@ -329,7 +327,6 @@
 	transform: translateY(-2px);
 }
 
-/* Анимации появления карт */
 .cardAppear0 {
 	animation: slideUp 0.6s ease-out forwards 0.1s;
 }
