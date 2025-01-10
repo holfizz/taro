@@ -37,7 +37,8 @@ export default function ThreeCards() {
 	}
 
 	const handleReadingStart = () => {
-		if (isReady) {
+		if (isReady && selectedCards.length === 3) {
+			window.Telegram.WebApp.sendData(JSON.stringify(selectedCards))
 			close()
 		}
 	}

@@ -53,10 +53,59 @@
 .deck {
 	cursor: pointer;
 	position: relative;
-	width: 70px;
-	height: 120px;
+	width: 76px;
+	height: 132px;
 	margin-bottom: 10%;
 	transform-style: preserve-3d;
+}
+
+.card {
+	perspective: 1000px;
+	cursor: pointer;
+	opacity: 0;
+	width: 76px;
+	height: 132px;
+}
+
+.cardStack {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	transform-style: preserve-3d;
+	margin-bottom: 40px;
+}
+
+.stackCard {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	backface-visibility: hidden;
+	border-radius: 10px;
+	overflow: hidden;
+	background: url('/cards/back.jpg') center/cover;
+	border: 1px solid #e8ccc0;
+	box-shadow: 0 0 10px rgba(232, 204, 192, 0.2);
+}
+
+/* Стили для расклада на 12 карт */
+.twelve .deck {
+	width: 70px !important;
+	height: 120px !important;
+}
+
+.twelve .card {
+	width: 70px !important;
+	height: 120px !important;
+}
+
+.twelve .cardStack {
+	width: 100%;
+	height: 100%;
+}
+
+.twelve .stackCard {
+	width: 100%;
+	height: 100%;
 }
 
 .deck:not(.started) {
@@ -65,8 +114,8 @@
 
 .deckGlow {
 	position: absolute;
-	width: 140px;
-	height: 140px;
+	width: 152px;
+	height: 152px;
 	background: radial-gradient(
 		ellipse 80% 80%,
 		rgba(255, 255, 0, 0.3) 0%,
@@ -80,6 +129,12 @@
 	transform: translate(-50%, -50%);
 	filter: blur(25px);
 	z-index: 0;
+}
+
+/* Специальный размер свечения для раскладов на 12 карт */
+.twelve .deckGlow {
+	width: 140px;
+	height: 140px;
 }
 
 .deck:not(.started) .deckGlow {
@@ -101,7 +156,7 @@
 	}
 }
 
-.cardStack {
+.stackCard {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -249,8 +304,8 @@
 	perspective: 1000px;
 	cursor: pointer;
 	opacity: 0;
-	width: 78px;
-	height: 134px;
+	width: 76px;
+	height: 132px;
 }
 
 .visible {
@@ -301,7 +356,7 @@
 	width: 90%;
 	padding: 5px 0;
 	font-size: 18px;
-	background: #818624;
+	background: #675c55;
 	color: white;
 	border: none;
 	border-radius: 10px;
@@ -323,7 +378,7 @@
 }
 
 .readingButton:hover {
-	background: #64671d;
+	background: #65584f;
 	transform: translateY(-2px);
 }
 

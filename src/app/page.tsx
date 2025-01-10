@@ -34,7 +34,8 @@ export default function Home() {
 	}
 
 	const handleReadingStart = () => {
-		if (isReady) {
+		if (isReady && selectedCard) {
+			window.Telegram.WebApp.sendData(JSON.stringify([selectedCard]))
 			window.Telegram.WebApp.close()
 		}
 	}

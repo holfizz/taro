@@ -53,7 +53,13 @@ export default function TwelveCards() {
 	}
 
 	const handleReadingStart = () => {
-		if (isReady) {
+		if (
+			isReady &&
+			selectedFirstSet.length === 6 &&
+			selectedSecondSet.length === 6
+		) {
+			const allSelectedCards = [...selectedFirstSet, ...selectedSecondSet]
+			window.Telegram.WebApp.sendData(JSON.stringify(allSelectedCards))
 			close()
 		}
 	}

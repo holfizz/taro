@@ -7,6 +7,9 @@ export const useTelegram = () => {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const tg = (window as any).Telegram?.WebApp
 		if (tg) {
+			if (!tg.isExpanded) {
+				tg.expand()
+			}
 			setIsReady(true)
 			tg.ready()
 		}
